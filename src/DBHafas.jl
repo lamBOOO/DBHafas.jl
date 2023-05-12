@@ -7,12 +7,14 @@ using TimeZones
 
 export journeys, locations
 
+DEF_USERAGENT = "test@testt.com"
+
 function journeys(from::Integer, to::Integer; date=Dates.now())
   io = IOBuffer();
   nodejscmd =
   """
   import {createDbHafas} from 'db-hafas';
-  let hafas = createDbHafas('test@test.com')
+  let hafas = createDbHafas('$(DEF_USERAGENT)')
   hafas.journeys('$(from)', '$(to)', {
     results: 20,
     departure: new Date('$(string(date))'),
@@ -48,7 +50,7 @@ function locations(query::String; opt=DEF_OPT_LOCATIONS)
   nodejscmd =
   """
   import {createDbHafas} from 'db-hafas';
-  let hafas = createDbHafas('test@test.com')
+  let hafas = createDbHafas('$(DEF_USERAGENT)')
   hafas.locations('$(query)', $(JSON.json(opt))).then((val)=>{
     console.log(JSON.stringify(val))
   })
