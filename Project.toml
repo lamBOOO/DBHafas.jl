@@ -1,0 +1,4 @@
+name = "DBHafas"
+uuid = "b2c18f41-49ab-484d-a12b-636ce492a258"
+authors = ["Lambert Theisen <lambert.theisen@rwth-aachen.de>"]
+version = "0.1.0"
