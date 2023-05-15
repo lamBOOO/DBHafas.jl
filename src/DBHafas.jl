@@ -13,8 +13,16 @@ function journeys(from::Integer, to::Integer; date=Dates.now())
   io = IOBuffer();
   nodejscmd =
   """
-  import {createDbHafas} from 'db-hafas';
-  let hafas = createDbHafas('$(DEF_USERAGENT)')
+  import {createClient} from 'hafas-client'
+  import {profile as dbProfile} from 'hafas-client/p/db/index.js'
+  import {withRetrying} from 'hafas-client/retry.js'
+  const retryingDbProfile = withRetrying(dbProfile, {
+    retries: 5,
+    minTimeout: 2 * 1000,
+    factor: 1
+  })
+  let hafas = createClient(dbProfile, '$(DEF_USERAGENT)')
+  // console.log('client created')
   hafas.journeys('$(from)', '$(to)', {
     results: 20,
     departure: new Date('$(string(date))'),
