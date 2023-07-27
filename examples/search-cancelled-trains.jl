@@ -16,7 +16,7 @@ locs = [
  ("8000261", "München Hbf")
 ]
 ids = parse.(Int, map(l->l[1],locs))
-date = ZonedDateTime(now(), tz"Europe/Warsaw")
+date = ZonedDateTime(now() - Dates.Minute(120), tz"Europe/Warsaw")
 # date = ZonedDateTime(DateTime(2023,5,12,10,0,0,0), tz"Europe/Warsaw")
 
 function print_cancelled(js)
