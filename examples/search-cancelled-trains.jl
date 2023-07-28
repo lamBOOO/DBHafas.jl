@@ -35,7 +35,9 @@ end
 
 for (from, to) in Iterators.product(ids, ids)
   if from != to
-    @info from, to
+    from_station = locs[findfirst(x->x[1]==string(from), locs)][2]
+    to_station = locs[findfirst(x->x[1]==string(to), locs)][2]
+    @info from_station, to_station
     js = journeys(from, to, date=date)
     print_cancelled(js)
   end
