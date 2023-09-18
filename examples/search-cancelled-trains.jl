@@ -33,12 +33,42 @@ function print_cancelled(js)
   end
 end
 
+function get_cancelled_legs(js)
+  res = []
+  for j in js["journeys"]
+    for l in j["legs"]
+      if haskey(l, "cancelled")
+        push!(res, l)
+      end
+    end
+  end
+  return res
+end
+
+function print_legs(legs)
+  for l in legs
+    if haskey(l, "cancelled")
+      println(
+        l["plannedDeparture"], " | ", l["line"]["name"], " | ",
+        l["origin"]["name"], " ---> ", l["destination"]["name"]
+      )
+    end
+  end
+end
+
+all_legs_c = []
 for (from, to) in Iterators.product(ids, ids)
   if from != to
     from_station = locs[findfirst(x->x[1]==string(from), locs)][2]
     to_station = locs[findfirst(x->x[1]==string(to), locs)][2]
     @info from_station, to_station
     js = journeys(from, to, date=date)
-    print_cancelled(js)
+    legs_c = get_cancelled_legs(js)
+    if length(legs_c) > 0
+      push!(all_legs_c, legs_c...)
+      print_legs(legs_c)
+    end
   end
 end
+println("--- UNIQUE SUMMARY ---")
+print_legs(sort(unique(all_legs_c, by=x->x["line"]["name"]*x["plannedDeparture"]), by=x->x["origin"]["name"]))
