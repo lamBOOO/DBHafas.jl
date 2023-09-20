@@ -71,4 +71,4 @@ for (from, to) in Iterators.product(ids, ids)
   end
 end
 println("--- UNIQUE SUMMARY ---")
-print_legs(sort(unique(all_legs_c, by=x->x["line"]["name"]*x["plannedDeparture"]), by=x->x["origin"]["name"]))
+print_legs(sort(unique(x->x["line"]["name"]*x["plannedDeparture"], all_legs_c), by=x->x["origin"]["name"]))
